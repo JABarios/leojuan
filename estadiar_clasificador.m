@@ -5,8 +5,8 @@ function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
 %obtenemos w1 (hc) y w2 (cx) y w3 (emg)
 % estadiaje 1 w   3 nrem 4 rem
  
-    eegref=reformatear(w2,lon_epoca*fm);    
-    emgref=reformatear(w3,lon_epoca*fm);    
+   
+ eegref=reformatear(w2(:),lon_epoca*fm);    
     
 
 %obtenemos señales para estadiar   
@@ -14,7 +14,7 @@ function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
     theta=(filtro(w1,6,10,fm));
     emg=(filtro(w3,30,35,fm));
 
-    emgref=reformatear(emg,lon_epoca*fm);    
+    emgref=reformatear(emg(:),lon_epoca*fm);    
     
     dd=smooth(resumir(zscore(log(delta.^2)),lon_epoca*fm),9);
     ee=smooth(resumir(zscore(log(emg.^2)),lon_epoca*fm),3);

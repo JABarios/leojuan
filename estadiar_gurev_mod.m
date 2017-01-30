@@ -1,17 +1,37 @@
-function estadiaje=estadiar_gurev_mod(ss,ch_cx,ch_hc,ch_mg)
+function estadiaje=estadiar_gurev_mod(ch_cx,ch_hc,ch_mg,fm,lepoca)
 
-       [xx,pmg,xx]	=esp2fmd(ss.senal{ch_mg},ss.frec,[10 100]);
+
+lepoca=5;
+horas=24;
+%calcular bandas
+%emg
+        ch_mg=ch_mg(:);
+        ch_mg=ch_mg(1:fm*60*60*horas);
+        ch_mg=reshape(ch_mg,fm*lepoca,[]);
+
+       [Sh,fh]=sig2espectro(ch_mg,lepoca,1,fm);
+       ch_mg=0; 
+       [xx,pmg,xx]=esp2fmd(Sh,fh,[10 100]);
        
-       [ff,xx,sh]=esp2fmd(ss.senal{ch_hc},ss.frec,[1 11]);
-       
-       [ff,sigma,sh]=esp2fmd(ss.senal{ch_cx},ss.frec,[10 14]);
-       
-       [xx,alfa,xx]=esp2fmd(ss.senal{ch_hc},ss.frec,[10 16]);
-       [xx,theta,xx]=esp2fmd(ss.senal{ch_hc},ss.frec,[7 9]);
-       [xx,gamma,xx]=esp2fmd(ss.senal{ch_hc},ss.frec,[30 80]);
-       [xx,delta,xx]=esp2fmd(ss.senal{ch_hc},ss.frec,[1 4]);
-       
-              
+%cx
+       ch_cx=ch_cx(:);
+       ch_cx=ch_cx(1:fm*60*60*horas);
+       ch_cx=reshape(ch_cx,fm*lepoca,[]);
+       [Sh,fh]=sig2espectro(ch_cx,lepoca,1,fm);
+       ch_cx=0;  
+       [ff,sigma,sh]=esp2fmd(ch_cx,ss.frec,[10 14]);
+%hc 
+       ch_hc=ch_hc(:);
+       ch_hc=ch_hc(1:fm*60*60*horas);
+       ch_hc=reshape(ch_hc,fm*lepoca,[]);
+       [Sh,fh]=sig2espectro(ch_hc,lepoca,1,fm);
+       ch_hc=0; 
+       [xx,alfa,xx]=esp2fmd(Sh,fh,[10 16]);
+       [xx,theta,xx]=esp2fmd(Sh,fh,[7 9]);
+       [xx,gamma,xx]=esp2fmd(Sh,fh,[30 80]);
+       [xx,delta,xx]=esp2fmd(Sh,fh,[1 4]);
+       [ff,xx,sh]=esp2fmd(Sh,fh,[1 11]);
+       ch_hc=0;       
        
         ag=smooth(alfa./gamma,3)';
         td=smooth(theta./delta,3)';

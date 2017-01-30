@@ -1,28 +1,24 @@
-function [eegref,emgref,qw1]=caza_epocas(arch,titulo,nomfig,interv,hfin)
+function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
 % calculado para fm=200 y estadiamos cada 5 segundos   
-% devuelve 
+% devuelve hipnograma
 
 %obtenemos w1 (hc) y w2 (cx) y w3 (emg)
 % estadiaje 1 w   3 nrem 4 rem
-    load(arch)
+ 
+    eegref=reformatear(w2,lon_epoca*fm);    
+    emgref=reformatear(w3,lon_epoca*fm);    
     
-    eegref=reformatear(w2,5*200);    
-    emgref=reformatear(w3,5*200);    
-    
-    %plot(eegref(:,epoca))
-
-    arch
 
 %obtenemos señales para estadiar   
-    delta=(filtro(w2,1,4,200));
-    theta=(filtro(w1,6,10,200));
-    emg=(filtro(w3,30,35,200));
+    delta=(filtro(w2,1,4,fm));
+    theta=(filtro(w1,6,10,fm));
+    emg=(filtro(w3,30,35,fm));
 
-    emgref=reformatear(emg,5*200);    
+    emgref=reformatear(emg,lon_epoca*fm);    
     
-    dd=smooth(resumir(zscore(log(delta.^2)),200*5),9);
-    ee=smooth(resumir(zscore(log(emg.^2)),200*5),3);
-    td=smooth(resumir(zscore(theta.^2)-zscore(delta.^2),200*5),9);
+    dd=smooth(resumir(zscore(log(delta.^2)),lon_epoca*fm),9);
+    ee=smooth(resumir(zscore(log(emg.^2)),lon_epoca*fm),3);
+    td=smooth(resumir(zscore(theta.^2)-zscore(delta.^2),lon_epoca*fm),9);
     
     estadiaje=ee;
     estadiaje(ee>-9)=-0.5;

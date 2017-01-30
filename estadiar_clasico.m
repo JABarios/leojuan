@@ -1,7 +1,8 @@
-function [h1]=estadiar(arch,horas,fm)
+function [h1]=estadiar_clasico(w1c,w1h,w1e,fm,lepoca)
 
 %fm=200;
 lepoca=5;
+horas=24;
 % -2 mov
 % -1 no estadiado
 % 0 vigilia
@@ -9,7 +10,6 @@ lepoca=5;
 % 2 rem
 
     %leemos emg
-    w1e=lee_edf_v(arch,3);
     w1e=w1e(:);
     w1e=w1e(1:fm*60*60*horas);
     w1e=reshape(w1e,fm*lepoca,[]);
@@ -29,7 +29,6 @@ lepoca=5;
 	dbg_reglas(h1);
    
     %leemos corteza
-    w1c=lee_edf_v(arch,1);
     w1c=w1c(:);
 
     w1c=w1c(1:fm*60*60*horas);
@@ -85,7 +84,6 @@ lepoca=5;
     
      
     %leemos hipocampo
-    w1h=lee_edf_v(arch,2);
     w1h=w1h(:);
     
     w1h=w1h(1:fm*60*60*horas);

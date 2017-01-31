@@ -4,7 +4,15 @@ function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
 
 %obtenemos w1 (hc) y w2 (cx) y w3 (emg)
 % estadiaje 1 w   3 nrem 4 rem
- 
+% -2 mov
+% -1 no estadiado
+% 0 vigilia
+% 1 nrem
+% 2 rem
+
+
+
+
    
  eegref=reformatear(w2(:),lon_epoca*fm);    
     
@@ -13,11 +21,14 @@ function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
     delta=(filtro(w2,1,4,fm));
     theta=(filtro(w1,6,10,fm));
     emg=(filtro(w3,30,35,fm));
+    sigma=(filtro(w2,10,15,fm));
+    
 
     emgref=reformatear(emg(:),lon_epoca*fm);    
     
     dd=smooth(resumir(zscore(log(delta.^2)),lon_epoca*fm),9);
     ee=smooth(resumir(zscore(log(emg.^2)),lon_epoca*fm),3);
+    ss=smooth(resumir(zscore(log(sigma.^2)+log(theta.^2)),lon_epoca*fm),6);
     td=smooth(resumir(zscore(theta.^2)-zscore(delta.^2),lon_epoca*fm),9);
     
     estadiaje=ee;
@@ -26,26 +37,26 @@ function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
     estadiaje(ee>0.0)=1; %w
     estadiaje(ee<0.0)=2; %w
    
-    estadiaje(ee<0.0 & dd>0.05)=3; %nrem
-    estadiaje(ee<0.0 & td>0.1)=4; %rem
+    estadiaje(ee<0.0 & ss > 0.0 & dd>0.05)=3; %nrem
+    estadiaje(ee<0.0 & ss > 0.0 & td>0.1)=4; %rem
    
-    p4=[mean(dd(estadiaje==4)) mean(td(estadiaje==4)) mean(ee(estadiaje==4))];
-    p3=[mean(dd(estadiaje==3)) mean(td(estadiaje==3)) mean(ee(estadiaje==3))];
-    p2=[mean(dd(estadiaje==2)) mean(td(estadiaje==2)) mean(ee(estadiaje==2))];
-    p1=[mean(dd(estadiaje==1)) mean(td(estadiaje==1)) mean(ee(estadiaje==1))];
+    p4=[mean(dd(estadiaje==4)) mean(td(estadiaje==4)) mean(ee(estadiaje==4)) mean(ss(estadiaje==4))];
+    p3=[mean(dd(estadiaje==3)) mean(td(estadiaje==3)) mean(ee(estadiaje==3)) mean(ss(estadiaje==3))];
+    p2=[mean(dd(estadiaje==2)) mean(td(estadiaje==2)) mean(ee(estadiaje==2)) mean(ss(estadiaje==2))];
+    p1=[mean(dd(estadiaje==1)) mean(td(estadiaje==1)) mean(ee(estadiaje==1)) mean(ss(estadiaje==1))];
 
-    qw1=kmeans([dd'; td'; ee']',[],'start',[p1;p2;p3;p4]);
+    qw1=kmeans([dd'; td'; ee'; ss']',[],'start',[p1;p2;p3;p4]);
     qw1=medfilt1(qw1,5);
     qw1=medfilt1(qw1,5);
    
    
     estadiaje=qw1;
-    p4=[mean(dd(estadiaje==4)) mean(td(estadiaje==4)) mean(ee(estadiaje==4))];
-    p3=[mean(dd(estadiaje==3)) mean(td(estadiaje==3)) mean(ee(estadiaje==3))];
-    p2=[mean(dd(estadiaje==2)) mean(td(estadiaje==2)) mean(ee(estadiaje==2))];
-    p1=[mean(dd(estadiaje==1)) mean(td(estadiaje==1)) mean(ee(estadiaje==1))];
+    p4=[mean(dd(estadiaje==4)) mean(td(estadiaje==4)) mean(ee(estadiaje==4)) mean(ss(estadiaje==4))];
+    p3=[mean(dd(estadiaje==3)) mean(td(estadiaje==3)) mean(ee(estadiaje==3)) mean(ss(estadiaje==3))];
+    p2=[mean(dd(estadiaje==2)) mean(td(estadiaje==2)) mean(ee(estadiaje==2)) mean(ss(estadiaje==2))];
+    p1=[mean(dd(estadiaje==1)) mean(td(estadiaje==1)) mean(ee(estadiaje==1)) mean(ss(estadiaje==1))];
 
-    qw1=kmeans([dd'; td'; ee']',[],'start',[p1;p2;p3;p4]);
+    qw1=kmeans([dd'; td'; ee'; ss']',[],'start',[p1;p2;p3;p4]);
    
    
    ii=1;
@@ -80,7 +91,11 @@ function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
 
     qw1=medfilt1(qw1,5);
     qw1=medfilt1(qw1,5);
-  
+
+    qw1(qw1==1)=0;
+    qw1(qw1==3)=1;
+    qw1(qw1==4)=2;
+
     passgamma1=(filtro(w1,75,95,200));
     passgamma2=(filtro(w1,75,95,200));
     w1=w1/sum(passgamma1.^2);

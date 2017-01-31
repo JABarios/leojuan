@@ -1,8 +1,8 @@
-function s=estadisticas_sueno(h1)
+function s=estadisticas_sueno(h1,lon_epoca)
   h1=h1(:);
-  s.w_d=mean(cadenando(h1,0));
-  s.nrem_d=mean(cadenando(h1,1));
-  s.rem_d=mean(cadenando(h1,2));
+  s.w_d=mean(cadenando(h1,0))*lon_epoca;
+  s.nrem_d=mean(cadenando(h1,1)*lon_epoca);
+  s.rem_d=mean(cadenando(h1,2)*lon_epoca);
   
 
 end

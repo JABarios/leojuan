@@ -135,6 +135,7 @@ horas=24;
     end   
 	dbg_reglas(h1);
  
+    h1(h1==-2)=0;
 %    h1(h1==-1 ) =1;
   
     

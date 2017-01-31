@@ -1,5 +1,10 @@
 function estadiaje=estadiar_gurev_mod(ch_cx,ch_hc,ch_mg,fm,lepoca)
 
+% -2 mov
+% -1 no estadiado
+% 0 vigilia
+% 1 nrem
+% 2 rem
 
 lepoca=5;
 horas=24;
@@ -19,7 +24,7 @@ horas=24;
        ch_cx=reshape(ch_cx,fm*lepoca,[]);
        [Sh,fh]=sig2espectro(ch_cx,lepoca,1,fm);
        ch_cx=0;  
-       [ff,sigma,sh]=esp2fmd(ch_cx,ss.frec,[10 14]);
+       [ff,sigma,sh]=esp2fmd(Sh,fh,[10 14]);
 %hc 
        ch_hc=ch_hc(:);
        ch_hc=ch_hc(1:fm*60*60*horas);
@@ -130,7 +135,12 @@ horas=24;
                    continue;
                end    
            end    
-       end    
+     end
+     
+     estadiaje(estadiaje==2)=1;
+     estadiaje(estadiaje==3)=2;
+     
+     
 
        %estadiaje=medfilt1(estadiaje,3);
         

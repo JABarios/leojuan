@@ -1,7 +1,7 @@
 function [h1]=estadiar_clasico(w1c,w1h,w1e,fm,lepoca)
 
 %fm=200;
-lepoca=5;
+%lepoca=5;
 horas=24;
 % -2 mov
 % -1 no estadiado

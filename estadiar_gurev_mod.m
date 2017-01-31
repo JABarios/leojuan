@@ -6,7 +6,7 @@ function estadiaje=estadiar_gurev_mod(ch_cx,ch_hc,ch_mg,fm,lepoca)
 % 1 nrem
 % 2 rem
 
-lepoca=5;
+%lepoca=5;
 horas=24;
 %calcular bandas
 %emg

@@ -14,17 +14,13 @@ function [qw1]=estadiar_clasificador(w2,w1,w3,fm,lon_epoca)
 
 
    
- eegref=reformatear(w2(:),lon_epoca*fm);    
     
 
 %obtenemos señales para estadiar   
-    delta=(filtro(w2,1,4,fm));
-    theta=(filtro(w1,6,10,fm));
-    emg=(filtro(w3,30,35,fm));
-    sigma=(filtro(w2,10,15,fm));
-    
-
-    emgref=reformatear(emg(:),lon_epoca*fm);    
+    theta= (filtro(w1,6,10,fm));
+    delta= (filtro(w2,1,4,fm));
+    sigma= (filtro(w2,10,15,fm));
+    emg  = (filtro(w3,30,35,fm));
     
     dd=smooth(resumir(zscore(log(delta.^2)),lon_epoca*fm),9);
     ee=smooth(resumir(zscore(log(emg.^2)),lon_epoca*fm),3);

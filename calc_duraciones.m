@@ -1,0 +1,11 @@
+ fprintf('%s\t%s\t%s\n','w_d','nrem_d','rem_d');
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT1_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT2_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT3_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT4_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT5_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT6_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT7_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT9_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT12_TW1',300,5,'w13_esta','WT','07',[1 7000]);
+[h3,dd,ee,ss,td,ddc]=test_hipnogramas('datos/WT13_TW1',300,5,'w13_esta','WT','07',[1 7000]);

@@ -13,8 +13,8 @@ function [indices,duraciones]=hip2csv(h1,lon_epoca,arch,gen,codigo,luz)
    estadios=estadios(ind);
    luces=indices*0+1;
    if(size(luz,1)==1)
-       l1=max(find(indices<luz(1)))
-       l2=max(find(indices<luz(2)))
+       l1=max(find(indices<luz(1)));
+       l2=max(find(indices<luz(2)));
        luces(l1:l2)=2;
    else
        l1=max(find(indices<luz(1,2)));

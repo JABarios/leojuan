@@ -5,6 +5,7 @@ function s=estadisticas_sueno(h1,lon_epoca)
   s.rem_d=mean(cadenando(h1,2)*lon_epoca);
   
 
+  fprintf('%f\t%f\t%f\n',s.w_d,s.nrem_d,s.rem_d);
 end
 
 function salida=cadenando(h1,fase)

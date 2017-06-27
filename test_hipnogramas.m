@@ -1,13 +1,14 @@
 
-function [h3,dd,ee,ss,td,ddc]=test_hipnogramas(arch,fm,lepoca,archcsv,gen,codigo,luz,modarch)
+function [h3,dd,ee,ss,td,ddc]=test_hipnogramas(arch,fm,lepoca,archcsv,gen,codigo,luz,modarch,max_escala)
 
    load(arch);
 %   [h1]=estadiar_clasico(w1(1,:),w1(2,:),w1(3,:),fm,lepoca);
 %   [h2]=estadiar_gurev_mod(w1(1,:),w1(2,:),w1(3,:),fm,lepoca);
    [h3,dd,ee,ss,td,ddc,us,ut,ue,ud]=estadiar_clasificador(w1(1,:),w1(2,:),w1(3,:),fm,lepoca);
-   [indluz,xx2,luces]=hip2csv(h3,lepoca,archcsv,gen,codigo,luz,modarch);
+   [indluz,xx2,luces]=hip2csv(h3,lepoca,archcsv,gen,codigo,luz,modarch,max_escala);
    estadisticas_sueno(h3,lepoca);
 
+   h3=medfilt1(h3,30);
    fig = figure;
    subplot(5,1,1);
    hold on;

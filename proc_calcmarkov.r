@@ -37,7 +37,8 @@ calc_markov <- function(genotipo,MATR) {
 
 
 
-r <- read.table("wt_estadios.csv",header=T,dec=',')
+r <- read.table("wt_estadios_escalas_emg5590.csv",header=T,dec=',')
+r <- r[r$escala==nescala,]
 r$GEN <- factor(r$GEN,levels=c('WT','KO'),labels=c("WT","KO"))
 r[r$luz=='OSCURIDAD',]$GEN='KO'
 r <- subset(r, select = -c(t) )
@@ -73,22 +74,20 @@ contador2=1
   for(vgen in genotipos){
 	rr <- subset(r,r$GEN==vgen)
 	ratones <- unique(rr$cod)
-       print(ratones)
 	contador=1
 	MATR=list()
 
 	for ( i in ratones ){
-                print(i)
 		vc <- vector()
 # esto es el truco mas sucio que he visto en mi vida, alucino si realmente es mio
 # f es una funcion!! y como efecto colateral, modifica vc
 		apply(subset(rr,rr$cod==i), 1, f)  
 		mcfit <- markovchainFit(data=vc,confidencelevel = .95)
-		print(mcfit$estimate)
+		#print(mcfit$estimate)
 		v1=attr(mcfit$estimate,"transitionMatrix")
      		prem[contador2,contador]=v1[1,1]
 		pnrem[contador2,contador]=v1[2,2]
-		pwake[contador2,contador]=v1[3,3]
+		#pwake[contador2,contador]=v1[3,3]
 		pmat[,contador+(contador2-1)*9]=as.vector(v1)
 		MATR[[contador]]=v1
 		contador=contador+1
@@ -114,10 +113,10 @@ b=MWTKO[[1]][[1]]*0;
  }
   mk_ko=b/9
  
-print("matrix probability transition WT")
-print(mk_wt)
-print("matrix probability transition Cx36 KO")
-print(mk_ko)
+#print("matrix probability transition WT")
+#print(mk_wt)
+#print("matrix probability transition Cx36 KO")
+#print(mk_ko)
 
 pmat <- t(pmat) 
 
@@ -141,7 +140,7 @@ melted <- melt(pmat, id.vars=c("cod","gen"))
 aa  <- ddply(melted, c("gen","variable"), summarise,value = mean(value,na.rm=T), sd = sd(value,na.rm=T),periodos=length(value))
 aa1<- dcast(aa,variable ~ gen, mean)
 aa1 <- mutate(aa1,Diff=aa1$ko-aa1$wt)
-tabla1 <- ddply(melted, .(variable), summarise,sem=sd(value,na.rm=T)/3, p_value=t.test( value ~ gen)$p.value)
+tabla1 <- ddply(melted, .(variable), summarise,sem=sd(value,na.rm=T)/3, p_value=t.test( value ~ gen)$p.value,paired=T)
 tabla1 <- merge(aa1,tabla1)
 print (tabla1)
 

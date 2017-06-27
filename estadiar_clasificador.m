@@ -8,6 +8,7 @@ function [qw1,dd,ee,ss,td,ddc,umbral_sigma,umbral_theta,umbral_emg, umbral_delta
 % 0 vigilia
 % 1 nrem
 % 2 rem
+% 9 9 3 6 11 900 200 1.0 1.5
 
 
 %obtenemos señales para estadiar   
@@ -15,7 +16,7 @@ function [qw1,dd,ee,ss,td,ddc,umbral_sigma,umbral_theta,umbral_emg, umbral_delta
     delta= (filtro(w1,1,4,fm));
     deltac= (filtro(w2,1,4,fm));
     sigma= (filtro(w2,10,15,fm));
-    emg  = (filtro(w3,30,39,fm));
+    emg  = (filtro(w3,55,90,fm));
     gamma= (filtro(w2,30,45,fm));
     
    
@@ -67,8 +68,8 @@ function [qw1,dd,ee,ss,td,ddc,umbral_sigma,umbral_theta,umbral_emg, umbral_delta
         qw1=medfilt1(qw1,11);
 
         
-        umbral_emg=mean(ee(qw1==1))+0.01;
-        umbral_sigma=(mean(ss(qw1==1))+mean(ss(qw1==2)))/2;
+        umbral_emg=mean(ee(qw1==1))+0.001;
+        umbral_sigma=(1.0*mean(ss(qw1==1))+mean(ss(qw1==2)))/2;
         umbral_theta=(1.5*mean(td(qw1==2))+mean(td(qw1==3)))/2.5;
         umbral_delta=(mean(dd(qw1==2))+mean(dd(qw1==1)))/2;
         estadiaje=qw1;
@@ -114,8 +115,8 @@ function [qw1,dd,ee,ss,td,ddc,umbral_sigma,umbral_theta,umbral_emg, umbral_delta
        end
    
  end 
-    qw1=medfilt1(qw1,11);
-    qw1=medfilt1(qw1,11);
+%    qw1=medfilt1(qw1,11);
+%    qw1=medfilt1(qw1,11);
 
 
 

@@ -12,10 +12,19 @@
 # Compiled MEX binaries (all platforms)
 *.mex*
 
+# temporales
+*.swp
+
+
+
 # donde guardar cosas  
 ref/
 # donde guardar datos 
 datos/
+
+# donde guardar calculos 
+calc/
+
 
 
 # Session info

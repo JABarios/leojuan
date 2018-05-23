@@ -38,10 +38,10 @@ calc_markov <- function(genotipo,MATR) {
 
 nescala=35
 
-r <- read.table("wt_estadios_escalas_emg5590.csv",header=T,dec=',')
+r <- read.table("ko_estadios_escalas_emg5590.csv",header=T,dec=',')
 r <- r[r$escala==nescala,]
 r$GEN <- factor(r$GEN,levels=c('WT','KO'),labels=c("WT","KO"))
-r[r$luz=='OSCURIDAD',]$GEN='KO'
+r[r$luz=='OSCURIDAD',]$GEN='WT'
 #r <- subset(r, select = -c(t) )
 r[r$est==0 & r$dur > 150,]$est=3
 r$est <- factor(r$est,levels=c(3,2,1,0),labels=c("LONW","REM","SWS","Wake"))
@@ -106,19 +106,20 @@ contador2=1
 
 #stop("fin")
 
+n_ratones=7;
  a=MWTKO[[1]][[1]]*0;
  
- for(i in 1:9){
+ for(i in 1:n_ratones){
     a=a+MWTKO[[1]][[i]]	
  }
- mk_wt=a/9
+ mk_wt=a/n_ratones
  
 b=MWTKO[[1]][[1]]*0;
  
- for(i in 1:9){
+ for(i in 1:n_ratones){
     b=b+MWTKO[[2]][[i]]	
  }
-  mk_ko=b/9
+  mk_ko=b/n_ratones
  
 #print("matrix probability transition WT")
 print(mk_wt)
